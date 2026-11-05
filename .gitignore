@@ -1,0 +1,49 @@
+# Dependencies
+node_modules/
+.venv/
+venv/
+env/
+
+# Build output and caches
+.next/
+out/
+dist/
+build/
+.turbo/
+.cache/
+coverage/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+__pycache__/
+*.py[cod]
+
+# Local environment and secrets
+.env*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+
+# Local databases, logs, and generated backups
+*.db
+*.sqlite
+*.sqlite3
+*.log
+*.bak
+*.dump
+*.zip
+*.7z
+*.rar
+*.tar
+*.tar.gz
+
+# Local editor and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

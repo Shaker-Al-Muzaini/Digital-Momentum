@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "platform": "Instagram",
+    "label": ["متابعين", "Followers"],
+    "rate": 2.4,
+    "min": 100,
+    "max": 50000,
+    "color": "#FF375F"
+  },
+  {
+    "id": 2,
+    "platform": "YouTube",
+    "label": ["مشاهدات", "Views"],
+    "rate": 1.2,
+    "min": 500,
+    "max": 100000,
+    "color": "#FF453A"
+  },
+  {
+    "id": 3,
+    "platform": "TikTok",
+    "label": ["إعجابات", "Likes"],
+    "rate": 0.9,
+    "min": 100,
+    "max": 20000,
+    "color": "#5E5CE6"
+  },
+  {
+    "id": 4,
+    "platform": "Telegram",
+    "label": ["أعضاء", "Members"],
+    "rate": 2.2,
+    "min": 100,
+    "max": 10000,
+    "color": "#0A84FF"
+  },
+  {
+    "id": 5,
+    "platform": "X",
+    "label": ["متابعين", "Followers"],
+    "rate": 3.1,
+    "min": 100,
+    "max": 20000,
+    "color": "#636366"
+  },
+  {
+    "id": 6,
+    "platform": "Facebook",
+    "label": ["إعجابات الصفحة", "Page likes"],
+    "rate": 1.6,
+    "min": 100,
+    "max": 30000,
+    "color": "#0071E3"
+  }
+]

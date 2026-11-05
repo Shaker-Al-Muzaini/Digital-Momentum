@@ -1,0 +1,108 @@
+{
+  "home": ["الرئيسية", "Home"],
+  "services": ["الخدمات", "Services"],
+  "pricing": ["الأسعار", "Pricing"],
+  "how": ["كيف يعمل", "How it works"],
+  "api": ["API", "API"],
+  "faq": ["الأسئلة", "FAQ"],
+  "contact": ["تواصل معنا", "Contact"],
+  "signin": ["تسجيل الدخول", "Sign in"],
+  "start": ["ابدأ الآن", "Get started"],
+  "explore": ["استكشف الخدمات", "Explore services"],
+  "h1": ["نمّي حضورك الرقمي. بلمسة واحدة.", "Grow your presence. In one tap."],
+  "hs": [
+    "لوحة واحدة تدير طلباتك ومدفوعاتك وتتابع كل شيء تلقائياً.",
+    "One panel for your orders and payments, tracked automatically."
+  ],
+  "pinh": ["ثلاث خطوات", "Three steps"],
+  "s1": ["أنشئ حسابك", "Create your account"],
+  "d1": [
+    "سجّل في ثوانٍ وابدأ فوراً.",
+    "Sign up in seconds and start right away."
+  ],
+  "s2": ["اشحن رصيدك", "Add funds"],
+  "d2": ["بطاقة Stripe أو تحويل محلي.", "Stripe card or a local transfer."],
+  "s3": ["اطلب وتابع", "Order and track"],
+  "d3": [
+    "تتحدّث الحالات تلقائياً حتى الاكتمال.",
+    "Statuses update automatically until completion."
+  ],
+  "s4": ["استرداد تلقائي", "Automatic refunds"],
+  "d4": [
+    "نُعيد الرصيد عند الإلغاء أو التنفيذ الجزئي.",
+    "Canceled or partial orders are refunded."
+  ],
+  "bh": ["كل ما تحتاجه، في مكان واحد.", "Everything you need, in one place."],
+  "b1": ["تحديث تلقائي للحالات", "Automatic status updates"],
+  "b1d": [
+    "نتابع المزودين نيابةً عنك ونحدّث كل طلب لحظة بلحظة.",
+    "We track providers for you and update every order in real time."
+  ],
+  "b2": ["دفع مرن", "Flexible payments"],
+  "b2d": ["Stripe ومحافظ وبنوك محلية.", "Stripe, wallets and local banks."],
+  "b3": ["واجهة API", "Developer API"],
+  "b3d": ["اربط متجرك بسهولة.", "Connect your store with ease."],
+  "b4": ["عربي وإنجليزي", "Arabic and English"],
+  "b4d": ["واجهة كاملة باتجاهين.", "A full two-direction interface."],
+  "b5": ["آمن ومنظّم", "Secure by design"],
+  "b5d": [
+    "حسابات محمية وسجل مالي دقيق.",
+    "Protected accounts and an exact ledger."
+  ],
+  "ct": ["جاهز للبدء؟", "Ready to start?"],
+  "cs": ["أنشئ حسابك الآن.", "Create your account now."],
+  "svh": ["الخدمات", "Services"],
+  "svs": ["أسعار توضيحية لكل 1000 وحدة.", "Sample prices per 1000 units."],
+  "from": ["ابتداءً من", "From"],
+  "mm": ["الحدود", "Min – Max"],
+  "prh": ["ادفع بقدر ما تستخدم", "Pay only for what you use"],
+  "prs": ["احسب تكلفة طلبك فوراً.", "Estimate your order instantly."],
+  "svc": ["الخدمة", "Service"],
+  "qty": ["الكمية", "Quantity"],
+  "total": ["الإجمالي", "Total"],
+  "p1k": ["السعر لكل 1000", "Price per 1000"],
+  "pm": ["طرق الدفع", "Payment methods"],
+  "pmv": ["Stripe · محافظ وبنوك محلية", "Stripe · Local wallets and banks"],
+  "hwh": ["كيف يعمل", "How it works"],
+  "hws": [
+    "من التسجيل إلى الاكتمال، بدون تعقيد.",
+    "From sign-up to completion, no friction."
+  ],
+  "apih": ["واجهة API للمطورين", "API for developers"],
+  "apis": [
+    "الصيغة القياسية المعتمدة في لوحات SMM.",
+    "The standard format used across SMM panels."
+  ],
+  "fqh": ["الأسئلة الشائعة", "Frequently asked"],
+  "q1": ["كم يستغرق تنفيذ الطلب؟", "How long does an order take?"],
+  "a1": [
+    "يبدأ غالباً خلال 1–6 ساعات حسب الخدمة.",
+    "Most orders start within 1–6 hours, depending on the service."
+  ],
+  "q2": ["ماذا لو لم يكتمل الطلب؟", "What if an order is not completed?"],
+  "a2": [
+    "يُسترد المبلغ تلقائياً للجزء غير المنفّذ.",
+    "The unfulfilled part is refunded automatically."
+  ],
+  "q3": ["كيف أشحن رصيدي؟", "How do I add funds?"],
+  "a3": [
+    "عبر Stripe أو تحويل محلي بعد مراجعة الأدمن.",
+    "Via Stripe, or a local transfer after admin review."
+  ],
+  "cth": ["تواصل معنا", "Get in touch"],
+  "cts": ["اكتب لنا وسنردّ عليك.", "Write to us and we will reply."],
+  "name": ["الاسم", "Name"],
+  "email": ["البريد الإلكتروني", "Email"],
+  "msg": ["الرسالة", "Message"],
+  "send": ["إرسال", "Send"],
+  "sent": ["تم الإرسال", "Message sent"],
+  "rights": ["جميع الحقوق محفوظة", "All rights reserved"],
+  "bal": ["الرصيد", "Balance"],
+  "ord": ["الطلبات", "Orders"],
+  "act": ["نشطة", "Active"],
+  "done": ["مكتمل", "Completed"],
+  "prog": ["قيد التنفيذ", "In progress"],
+  "pend": ["قيد الانتظار", "Pending"],
+  "refd": ["تم الاسترداد", "Refunded"],
+  "upd": ["تم تحديث الحالة", "Status updated"]
+}

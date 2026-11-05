@@ -1,0 +1,42 @@
+[
+  [
+    "g1",
+    [
+      ["dashboard", "home", "dash", "#0A84FF"],
+      ["new", "plus", "new", "#30D158"],
+      ["mass", "layers", "mass", "#BF5AF2"],
+      ["orders", "list", "orders", "#FF9F0A"],
+      ["services", "grid", "services", "#64D2FF"]
+    ]
+  ],
+  [
+    "g2",
+    [
+      ["funds", "wallet", "funds", "#34C759"],
+      ["tx", "receipt", "tx", "#5E5CE6"],
+      ["ref", "gift", "ref", "#FF375F"]
+    ]
+  ],
+  [
+    "g3",
+    [
+      ["api", "code", "api", "#8E8E93"],
+      ["news", "bell", "news", "#FF453A"],
+      ["faq", "book", "faq", "#AC8E68"],
+      ["support", "help", "support", "#0A84FF"],
+      ["account", "user", "account", "#636366"]
+    ]
+  ],
+  [
+    "g4",
+    [
+      ["adm", "chart", "adm", "#FF9F0A"],
+      ["users", "users", "users", "#30B0C7"],
+      ["apay", "card", "apay", "#34C759"],
+      ["prov", "link", "prov", "#5E5CE6"],
+      ["net", "globe", "net", "#0A84FF"],
+      ["srv", "server", "srv", "#FF453A"]
+    ],
+    1
+  ]
+]
