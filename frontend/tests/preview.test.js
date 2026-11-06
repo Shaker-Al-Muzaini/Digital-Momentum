@@ -75,3 +75,60 @@ test('registration, password change, logout and role isolation', async () => {
   await post('/auth/login', { email, password: 'new-secret' });
   assert.deepEqual(await simulate('/orders'), []);
 });
+
+test('preview survives refresh but a new browser session starts clean', async () => {
+  localStorage.setItem('smm-preview-v1', '{"old":"persistent data"}');
+  await login();
+  await post('/payments/card', { amount: 25 }, 'card-1');
+  await post('/orders', sample);
+  assert.equal((await simulate('/orders')).length, 5);
+  assert.equal(localStorage.getItem('smm-preview-v1'), null);
+  // Re-importing simulates a reload; sessionStorage is retained.
+  const fresh = await import('../lib/demo.js?reload');
+  assert.equal((await fresh.simulate('/orders')).length, 5);
+  globalThis.sessionStorage = storage();
+  await assert.rejects(simulate('/me'), { status: 401 });
+  await login();
+  assert.equal((await simulate('/orders')).length, 4);
+  assert.equal((await simulate('/me')).balance, 48.2);
+});
+test('concurrent purchases preserve both debits, and replayed card credit is idempotent', async () => {
+  await login();
+  await Promise.all([
+    post('/payments/card', { amount: 10 }, 'card-1'),
+    post('/payments/card', { amount: 10 }, 'card-1'),
+    post('/orders', sample, 'order-a'),
+    post('/orders', sample, 'order-b'),
+  ]);
+  assert.equal((await simulate('/me')).balance, 53.4);
+  assert.equal((await simulate('/orders')).length, 6);
+  assert.equal((await simulate('/payments')).history.filter(p => p.method === 'card').length, 1);
+});
+test('new orders progress to completion and update ledger and dashboard', async (t) => {
+  await login();
+  const now = Date.now();
+  t.mock.method(Date, 'now', () => now);
+  const [created] = await post('/orders', sample);
+  assert.equal(created.status, 'pending');
+  Date.now.mock.mockImplementation(() => now + 6000);
+  assert.equal((await simulate('/orders'))[0].status, 'prog');
+  Date.now.mock.mockImplementation(() => now + 21000);
+  assert.equal((await simulate('/orders'))[0].status, 'done');
+  assert.equal((await simulate('/transactions'))[0].status, 'done');
+  assert.equal((await simulate('/dashboard')).active, 2);
+});
+test('batch purchase, tickets and admin statistics reflect session activity', async () => {
+  await login();
+  await post('/payments/card', { amount: 25 });
+  const orders = await post('/orders/batch', { orders: [sample, sample] });
+  assert.equal(orders.length, 2);
+  await post('/tickets', { subject: 'Demo question', message: 'Help with my order' }, 'ticket-1');
+  await post('/tickets', { subject: 'Demo question', message: 'Help with my order' }, 'ticket-1');
+  assert.equal((await simulate('/tickets')).length, 2);
+  await login('admin@smm.app');
+  const dashboard = await simulate('/admin/dashboard');
+  assert.equal(dashboard.revenue, 25);
+  assert.equal(dashboard.active, 6);
+  assert.equal(dashboard.pending, 1);
+  assert.match((await post('/admin/generate', { prompt: 'Coffee' })).text, /Coffee/);
+});

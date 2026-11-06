@@ -143,6 +143,7 @@ export function ActionForm({
   className = 'cd',
   reset = true,
 }) {
+  const { local } = useUI();
   const [busy, setBusy] = useState(false),
     [message, notify] = useState('');
   const lock = useRef(false),
@@ -170,7 +171,7 @@ export function ActionForm({
       const message = await onSave(fields, attempt.current.key);
       attempt.current = null;
       if (reset) form.reset();
-      notify(message || '');
+      notify(message || local(['تمت العملية بنجاح', 'Completed successfully']));
     } catch (error) {
       notify(error.message);
     } finally {
@@ -179,7 +180,7 @@ export function ActionForm({
     }
   }
   return (
-    <form className={className} onChange={() => notify('')} onSubmit={submit}>
+    <form className={className} aria-busy={busy} onChange={() => notify('')} onSubmit={submit}>
       <fieldset disabled={busy}>{children}</fieldset>
       <p aria-live="polite">{message}</p>
     </form>

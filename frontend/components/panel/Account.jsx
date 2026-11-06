@@ -17,9 +17,10 @@ export function Support({ data, refresh }) {
   return (
     <div className="g2">
       <ActionForm
-        onSave={async (form) => {
+        onSave={async (form, key) => {
           await request('/tickets', {
             method: 'POST',
+            key,
             body: Object.fromEntries(form),
           });
           refresh();

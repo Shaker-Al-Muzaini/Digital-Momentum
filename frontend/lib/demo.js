@@ -3,7 +3,8 @@ import catalog from './catalog.json' with { type: 'json' };
 import { validateOrder } from './orders.js';
 import { news, providers, proxies, health } from './fixtures.js';
 
-const storageKey = 'smm-preview-v1';
+const storageKey = 'smm-preview-session-v2';
+let pending = Promise.resolve();
 const date = () => new Date().toISOString().slice(0, 10);
 const cents = (n) => Math.round(n * 100) / 100;
 const fail = (message, status = 400) => {
@@ -86,6 +87,7 @@ function createOrders(db, user, orders) {
       name: serviceName(s),
       charge: cents((o.quantity * s.rate) / 1000),
       date: date(),
+      createdAt: Date.now(),
       status: 'pending',
     };
   });
@@ -96,6 +98,7 @@ function createOrders(db, user, orders) {
     o.id = db.next++;
     user.orders.unshift(o);
     user.ledger.unshift({
+      orderId: o.id,
       date: o.date,
       label: o.name,
       amount: -o.charge,
@@ -163,8 +166,14 @@ async function dispatch(db, path, { method, body }, email) {
       user.password = await signature(email + '|' + body.password);
       return {};
     }
-    if (path === '/admin/generate')
-      return { text: 'معاينة Gemini / Gemini preview\n' + body.prompt };
+    if (path === '/admin/generate') {
+      const prompt = String(body.prompt || '').trim();
+      if (!prompt) fail('أدخل موضوع المحتوى / Enter a content topic');
+      const arabic = /[\u0600-\u06ff]/.test(prompt);
+      return { text: arabic
+        ? `محتوى تجريبي — ${prompt}\n\nخطوتك القادمة تبدأ بفكرة واضحة. اكتشف كيف يمكن لـ ${prompt} أن يضيف قيمة إلى يومك.\n\n• حدّد هدفك.\n• ابدأ بخطوة بسيطة.\n• تابع النتائج وطوّر تجربتك.\n\nشاركنا رأيك أو تواصل معنا لمعرفة المزيد.\n#تسويق_رقمي #DigitalMomentum`
+        : `Demo content — ${prompt}\n\nYour next step starts with a clear idea. Explore how ${prompt} can bring value to your day.\n\n• Define your goal.\n• Start with one simple step.\n• Track results and improve.\n\nShare your thoughts or contact us to learn more.\n#DigitalMarketing #DigitalMomentum` };
+    }
     if (path === '/payments/card' || path === '/payments/local') {
       const local = path.endsWith('local'),
         fields = local ? Object.fromEntries(body) : body,
@@ -284,10 +293,12 @@ async function dispatch(db, path, { method, body }, email) {
       case '/admin/dashboard': {
         const payments = paymentsFor(db);
         return {
-          revenue: 312.5,
-          active: 128,
+          revenue: cents(Object.values(db.users).flatMap((u) => u.payments)
+            .filter((p) => p.status === 'done').reduce((n, p) => n + p.amount, 0)),
+          active: Object.values(db.users).flatMap((u) => u.orders)
+            .filter((o) => ['pending', 'prog'].includes(o.status)).length,
           pending: payments.filter((p) => p.status === 'review').length,
-          providers: 1,
+          providers: providers.filter((p) => p.status === 'up').length,
           payments,
         };
       }
@@ -295,21 +306,38 @@ async function dispatch(db, path, { method, body }, email) {
   }
   fail('Unknown demo endpoint: ' + path, 404);
 }
+// Advance only newly submitted demo orders; seeded examples retain their status.
+function advanceOrders(db) {
+  for (const user of Object.values(db.users)) {
+    for (const order of user.orders) {
+      if (!order.createdAt || !['pending', 'prog'].includes(order.status)) continue;
+      const elapsed = Date.now() - order.createdAt;
+      order.status = elapsed >= 20000 ? 'done' : elapsed >= 5000 ? 'prog' : 'pending';
+      const entry = user.ledger.find((item) => item.orderId === order.id);
+      if (entry) entry.status = order.status;
+    }
+  }
+}
 export async function simulate(path, options = {}) {
   async function run() {
-    const saved = localStorage.getItem(storageKey),
-      db = saved ? JSON.parse(saved) : initial();
+    // Retire the old persistent preview without importing its accounts or payments.
+    localStorage.removeItem('smm-preview-v1');
+    const saved = sessionStorage.getItem(storageKey);
+    let db;
+    try { db = saved ? JSON.parse(saved) : initial(); }
+    catch { db = initial(); }
+    advanceOrders(db);
     const email = sessionStorage.getItem('smm-session'),
       user = db.users[email];
     const id = options.key && user ? path + '|' + options.key : null;
     if (id && Object.hasOwn(user.attempts, id)) return user.attempts[id];
     const result = await dispatch(db, path, options, email);
     if (id) user.attempts[id] = result;
-    if (!saved || options.method === 'POST')
-      localStorage.setItem(storageKey, JSON.stringify(db));
+    sessionStorage.setItem(storageKey, JSON.stringify(db));
     return result;
   }
-  return globalThis.navigator?.locks
-    ? navigator.locks.request(storageKey, run)
-    : run();
+  // Serialize read-modify-write operations even in browsers without Web Locks.
+  const result = pending.then(run, run);
+  pending = result.catch(() => {});
+  return result;
 }

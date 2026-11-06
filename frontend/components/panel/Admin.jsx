@@ -26,6 +26,7 @@ function PaymentReview({ data, refresh }) {
                   method: 'POST',
                   body: { status: form.get('decision') },
                 });
+                session.notify(t('saved'));
                 refresh();
                 session.refresh();
                 return t('saved');

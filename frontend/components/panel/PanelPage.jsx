@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Status, useResource } from '../shared';
+import { demoMode } from '../../lib/api';
 import { Dashboard, OrderForm, Orders, ServiceList } from './Orders';
 import { Funds, Transactions } from './Billing';
 import { Account, Faq, Support, KeyPage, Referrals, News } from './Account';
@@ -42,7 +43,7 @@ export default function PanelPage({ page }) {
       'tx',
       'net',
     ].includes(page)
-      ? 60000
+      ? (demoMode ? 2000 : 60000)
       : 0
   );
   useEffect(() => {
@@ -50,6 +51,6 @@ export default function PanelPage({ page }) {
   }, [router, error]);
   if (path && !data) return <Status error={error} retry={refresh} />;
   return (
-    <View page={page} data={data} refresh={refresh} mass={page === 'mass'} />
+    <View key={page} page={page} data={data} refresh={refresh} mass={page === 'mass'} />
   );
 }

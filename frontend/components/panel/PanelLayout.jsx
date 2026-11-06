@@ -17,6 +17,11 @@ export default function PanelLayout({ children }) {
     [mini, setMini] = useState(false),
     [groups, setGroups] = useState([]);
   const [notice, setNotice] = useState('');
+  useEffect(() => {
+    if (!notice) return;
+    const timer = setTimeout(() => setNotice(''), 10000);
+    return () => clearTimeout(timer);
+  }, [notice]);
   const page = path.split('/').pop(),
     group = nav.find(([, items]) => items.some(([key]) => key === page));
   const forbidden = user && group?.[2] && user.role !== 'admin';
@@ -55,7 +60,7 @@ export default function PanelLayout({ children }) {
     }
   }
   return (
-    <Session.Provider value={{ user, refresh, logout }}>
+    <Session.Provider value={{ user, refresh, logout, notify: setNotice }}>
       <div className={'app ' + (mini ? 'mini ' : '') + (open ? 'open' : '')}>
         <div className="ov" onClick={() => setOpen(false)} />
         <aside className="sb">
@@ -133,7 +138,7 @@ export default function PanelLayout({ children }) {
                 ])}
               </p>
             )}
-            {notice && <p role="alert">{notice}</p>}
+            {notice && <p className="note" role="status" aria-live="polite">{notice}</p>}
             {page !== 'dashboard' && <h1 className="ttl">{title}</h1>}
             {children}
           </main>

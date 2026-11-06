@@ -152,7 +152,7 @@ export function ServiceList({ data }) {
 }
 export function OrderForm({ data, mass = false }) {
   const { t, local } = useUI(),
-    { refresh } = useSession(),
+    { refresh, notify } = useSession(),
     router = useRouter();
   const [id, select] = useState(null),
     [q, setQty] = useState(1000);
@@ -170,12 +170,17 @@ export function OrderForm({ data, mass = false }) {
           },
           data
         );
-    await request(mass ? '/orders/batch' : '/orders', {
+    const result = await request(mass ? '/orders/batch' : '/orders', {
       method: 'POST',
       body,
       key,
     });
     refresh();
+    const ids = Array.isArray(result) ? result.map((order) => '#' + order.id).join(', ') : '';
+    notify(local([
+      `${mass ? 'تم إنشاء الطلبات' : 'تم إنشاء الطلب'} ${ids} بنجاح`,
+      `${mass ? 'Orders' : 'Order'} ${ids} created successfully`,
+    ]));
     router.push('/panel/orders');
   }
   return (
